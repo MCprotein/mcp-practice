@@ -1,10 +1,17 @@
 {
-  "name": "mongodb-mcp-server",
+  "name": "@mcprotein/mongodb-mcp-server",
   "version": "0.0.1",
   "description": "mongodb-mcp-server MCP server",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MCprotein/mcp-practice.git"
+  },
   "bin": {
-    "mongodb-mcp-server": "./dist/index.js"
+    "mongodb-mcp-server": "./dist/main.js"
   },
   "files": [
     "dist"
@@ -13,11 +20,12 @@
     "build": "tsc && mcp-build",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "start": "node dist/index.js",
-    "test": "npx @modelcontextprotocol/inspector dist/index.js"
+    "start": "node dist/main.js",
+    "test": "npm run build && npx @modelcontextprotocol/inspector dist/main.js"
   },
   "dependencies": {
-    "mcp-framework": "^0.1.29"
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "axios": "^1.8.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
