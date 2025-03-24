@@ -47,14 +47,11 @@ server.tool(
       JSON.parse(JSON.stringify(params));
 
     try {
-      const connection = mongoose.createConnection(
-        "mongodb://devsys:devsys@mongodb:27017/test?authSource=admin",
-        {
-          dbName: "test",
-          user: "devsys",
-          pass: "devsys",
-        }
-      );
+      if (!process.env.MONGODB_URI) {
+        throw new Error("MONGODB_URI is not defined");
+      }
+
+      const connection = mongoose.createConnection(process.env.MONGODB_URI);
       const Product = connection.model(
         "Product",
         new mongoose.Schema({
