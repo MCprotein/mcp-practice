@@ -105,6 +105,13 @@ server.tool(
           size: String,
         })
       );
+
+      await connection.collection("log").insertOne({
+        createdAt: new Date(),
+        params,
+        dto,
+      });
+
       const products = await Product.find({
         ...(name?.length ? { name: { $in: [name].flat() } } : {}),
         ...(brand?.length ? { brand: { $in: [brand].flat() } } : {}),
