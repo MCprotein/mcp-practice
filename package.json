@@ -21,7 +21,8 @@
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "start": "node dist/main.js",
-    "test": "npm run build && npx @modelcontextprotocol/inspector dist/main.js"
+    "test": "npm run build && npx @modelcontextprotocol/inspector dist/main.js",
+    "pub": "npm run build && npm publish"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
