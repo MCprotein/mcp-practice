@@ -46,41 +46,48 @@ server.tool(
     const { name, brand, category, color, size, total_stock, page, limit } =
       JSON.parse(JSON.stringify(params));
 
-    const connection = mongoose.createConnection(
-      "mongodb://devsys:devsys@mongodb:27017/test?authSource=admin",
-      {
-        dbName: "test",
-        user: "devsys",
-        pass: "devsys",
-      }
-    );
-    const Product = connection.model(
-      "Product",
-      new mongoose.Schema({
-        name: String,
-        brand: String,
-        category: String,
-        color: String,
-        size: String,
+    try {
+      const connection = mongoose.createConnection(
+        "mongodb://devsys:devsys@mongodb:27017/test?authSource=admin",
+        {
+          dbName: "test",
+          user: "devsys",
+          pass: "devsys",
+        }
+      );
+      const Product = connection.model(
+        "Product",
+        new mongoose.Schema({
+          name: String,
+          brand: String,
+          category: String,
+          color: String,
+          size: String,
+        })
+      );
+      const products = await Product.find({
+        ...(name?.length ? { name: { $in: [name].flat() } } : {}),
+        ...(brand?.length ? { brand: { $in: [brand].flat() } } : {}),
+        ...(category?.length ? { category: { $in: [category].flat() } } : {}),
+        ...(color?.length ? { color: { $in: [color].flat() } } : {}),
+        ...(size?.length ? { size: { $in: [size].flat() } } : {}),
+        ...(total_stock?.length
+          ? { total_stock: { $in: [total_stock].flat() } }
+          : {}),
       })
-    );
-    const products = await Product.find({
-      ...(name?.length ? { name: { $in: [name].flat() } } : {}),
-      ...(brand?.length ? { brand: { $in: [brand].flat() } } : {}),
-      ...(category?.length ? { category: { $in: [category].flat() } } : {}),
-      ...(color?.length ? { color: { $in: [color].flat() } } : {}),
-      ...(size?.length ? { size: { $in: [size].flat() } } : {}),
-      ...(total_stock?.length
-        ? { total_stock: { $in: [total_stock].flat() } }
-        : {}),
-    })
-      .skip((page ?? 0) * (limit ?? 100))
-      .limit(limit ?? 100)
-      .lean()
-      .exec();
-    return {
-      content: [{ type: "text", text: JSON.stringify(products) }],
-    };
+        .skip((page ?? 0) * (limit ?? 100))
+        .limit(limit ?? 100)
+        .lean()
+        .exec();
+      return {
+        content: [{ type: "text", text: JSON.stringify(products) }],
+      };
+    } catch (err) {
+      return {
+        isError: true,
+        content: [{ type: "text", text: `데이터베이스 연결 실패 ${err}` }],
+      };
+    }
   }
 );
 
