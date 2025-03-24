@@ -29,6 +29,47 @@ server.tool("findEnv", "이 MCP server의 환경변수를 찾아줘", async () =
   };
 });
 
+class ProductDto {
+  name?: string | string[];
+  brand?: string | string[];
+  category?: string | string[];
+  color?: string | string[];
+  size?: string | string[];
+  total_stock?: string | string[];
+  page?: number;
+  limit?: number;
+
+  constructor(params: Record<string, string>) {
+    for (const [key, value] of Object.entries(params)) {
+      if (!value || !ProductDto.isProductDtoKey(key)) continue;
+
+      if (key === "page" || key === "limit") {
+        this[key] = Number(value);
+        continue;
+      }
+
+      if (ProductDto.isProductDtoKey(key) && value.includes(",")) {
+        this[key] = value.split(",");
+      }
+
+      this[key] = value;
+    }
+  }
+
+  static isProductDtoKey(key: string): key is keyof ProductDto {
+    return [
+      "name",
+      "brand",
+      "category",
+      "color",
+      "size",
+      "total_stock",
+      "page",
+      "limit",
+    ].includes(key);
+  }
+}
+
 server.tool(
   "getProducts",
   "mongodb 데이터베이스에서 상품 목록을 조회해줘",
@@ -43,8 +84,10 @@ server.tool(
     limit: z.string().optional(),
   },
   async (params) => {
+    const dto = new ProductDto(params);
+
     const { name, brand, category, color, size, total_stock, page, limit } =
-      JSON.parse(JSON.stringify(params));
+      dto;
 
     try {
       if (!process.env.MONGODB_URI) {
