@@ -24,13 +24,13 @@ server.tool(
 
 server.tool("findEnv", "이 MCP server의 환경변수를 찾아줘", async () => {
   return {
-    content: [{ type: "text", text: `${process.env}` }],
+    content: [{ type: "text", text: `${JSON.stringify(process.env)}` }],
   };
 });
 
 server.tool("findArgv", "이 MCP server의 인자를 찾아줘", async () => {
   return {
-    content: [{ type: "text", text: `${process.argv}` }],
+    content: [{ type: "text", text: `${JSON.stringify(process.argv)}` }],
   };
 });
 
