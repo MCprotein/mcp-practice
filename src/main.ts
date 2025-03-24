@@ -50,6 +50,7 @@ class ProductDto {
 
       if (ProductDto.isProductDtoKey(key) && value.includes(",")) {
         this[key] = value.split(",");
+        continue;
       }
 
       this[key] = value;
