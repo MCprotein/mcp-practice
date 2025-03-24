@@ -47,7 +47,7 @@ server.tool(
       JSON.parse(JSON.stringify(params));
 
     const connection = mongoose.createConnection(
-      "mongodb://devsys:devsys@localhost:27017/test?authSource=admin",
+      "mongodb://devsys:devsys@mongodb:27017/test?authSource=admin",
       {
         dbName: "test",
         user: "devsys",
