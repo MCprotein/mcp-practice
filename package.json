@@ -1,6 +1,6 @@
 {
   "name": "@mcprotein/mongodb-mcp-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "mongodb-mcp-server MCP server",
   "type": "module",
   "publishConfig": {
