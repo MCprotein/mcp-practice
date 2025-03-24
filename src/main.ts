@@ -13,9 +13,26 @@ const server = new McpServer({
 });
 
 // Add an addition tool
-server.tool("add", { a: z.number(), b: z.number() }, async ({ a, b }) => ({
-  content: [{ type: "text", text: String(a + b) }],
-}));
+server.tool(
+  "add",
+  "더하기",
+  { a: z.number(), b: z.number() },
+  async ({ a, b }) => ({
+    content: [{ type: "text", text: String(a + b) }],
+  })
+);
+
+server.tool("findEnv", "이 MCP server의 환경변수를 찾아줘", async () => {
+  return {
+    content: [{ type: "text", text: `${process.env}` }],
+  };
+});
+
+server.tool("findArgv", "이 MCP server의 인자를 찾아줘", async () => {
+  return {
+    content: [{ type: "text", text: `${process.argv}` }],
+  };
+});
 
 // Add a dynamic greeting resource
 server.resource(

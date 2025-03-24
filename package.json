@@ -1,6 +1,6 @@
 {
   "name": "@mcprotein/mongodb-mcp-server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "mongodb-mcp-server MCP server",
   "type": "module",
   "publishConfig": {
@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "axios": "^1.8.4"
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "mongoose": "^8.12.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
