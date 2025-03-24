@@ -33,16 +33,19 @@ server.tool(
   "getProducts",
   "mongodb 데이터베이스에서 상품 목록을 조회해줘",
   {
-    name: z.array(z.string()).optional(),
-    brand: z.array(z.string()).optional(),
-    category: z.array(z.string()).optional(),
-    color: z.array(z.string()).optional(),
-    size: z.array(z.string()).optional(),
-    total_stock: z.array(z.number()).optional(),
-    page: z.number().optional(),
-    limit: z.number().optional(),
+    name: z.string().optional(),
+    brand: z.string().optional(),
+    category: z.string().optional(),
+    color: z.string().optional(),
+    size: z.string().optional(),
+    total_stock: z.string().optional(),
+    page: z.string().optional(),
+    limit: z.string().optional(),
   },
-  async ({ name, brand, category, color, size, total_stock, page, limit }) => {
+  async (params) => {
+    const { name, brand, category, color, size, total_stock, page, limit } =
+      JSON.parse(JSON.stringify(params));
+
     const connection = mongoose.createConnection(
       "mongodb://devsys:devsys@localhost:27017/test?authSource=admin",
       {
@@ -62,12 +65,14 @@ server.tool(
       })
     );
     const products = await Product.find({
-      ...(name?.length ? { name: { $in: name } } : {}),
-      ...(brand?.length ? { brand: { $in: brand } } : {}),
-      ...(category?.length ? { category: { $in: category } } : {}),
-      ...(color?.length ? { color: { $in: color } } : {}),
-      ...(size?.length ? { size: { $in: size } } : {}),
-      ...(total_stock?.length ? { total_stock: { $in: total_stock } } : {}),
+      ...(name?.length ? { name: { $in: [name].flat() } } : {}),
+      ...(brand?.length ? { brand: { $in: [brand].flat() } } : {}),
+      ...(category?.length ? { category: { $in: [category].flat() } } : {}),
+      ...(color?.length ? { color: { $in: [color].flat() } } : {}),
+      ...(size?.length ? { size: { $in: [size].flat() } } : {}),
+      ...(total_stock?.length
+        ? { total_stock: { $in: [total_stock].flat() } }
+        : {}),
     })
       .skip((page ?? 0) * (limit ?? 100))
       .limit(limit ?? 100)
