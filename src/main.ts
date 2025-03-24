@@ -31,7 +31,7 @@ server.tool("findEnv", "이 MCP server의 환경변수를 찾아줘", async () =
 
 server.tool(
   "getProducts",
-  "mongodb get produdcts",
+  "mongodb 데이터베이스에서 상품 목록을 조회해줘",
   {
     name: z.array(z.string()).optional(),
     brand: z.array(z.string()).optional(),
@@ -43,7 +43,7 @@ server.tool(
     limit: z.number().optional(),
   },
   async ({ name, brand, category, color, size, total_stock, page, limit }) => {
-    const connection = await mongoose.createConnection(
+    const connection = mongoose.createConnection(
       "mongodb://devsys:devsys@localhost:27017/test?authSource=admin",
       {
         dbName: "test",
